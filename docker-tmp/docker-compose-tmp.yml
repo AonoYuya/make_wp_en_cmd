@@ -1,0 +1,23 @@
+version: '3' #バージョン指定。現在は「3」を指定するのが良い
+services: #コンテナとして実行するアプリケーション”サービス”の意味。この中でどうやってコンテナを実行させるかを定義する。
+  wordpress: #サービス名の定義。この場合は「wordpress」という名前のサービスになる。
+    #build: . #使用するDockerfileの指定。この場合はカレントディレクトリのDockerfileを指定。イメージを使う場合は不要。
+    image: wordpress #使用するDockerImageの指定。Dockerfileを使用する場合は不要
+    container_name: examplecontainername #コンテナの名前を定義する。
+    restart: always #Docker起動時にこのコンテナも再起動するための設定
+    ports: #このサービスが公開するポートの指定。”ホスト側のポート番号:コンテナ内のポート番号”の順番
+      - 8080:80
+    environment: #環境変数の定義
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: develop
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: exampledb
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: develop
+      MYSQL_PASSWORD: password
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
